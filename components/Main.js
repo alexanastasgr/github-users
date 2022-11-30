@@ -1,5 +1,5 @@
 import { StyleSheet, Alert, TouchableOpacity, Image, Text, View, TextInput } from 'react-native';
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 
 import logo from '../assets/github.png';
@@ -7,6 +7,7 @@ import logo from '../assets/github.png';
 export default function Main({ navigation }) {
 
   const [query, setQuery] = useState('')
+  const [error, setError] = useState('')
 
   // update the state
   const handleQuery = (text) => {
@@ -16,14 +17,21 @@ export default function Main({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Image style={styles.logo} source={logo} />
+
+
+
+      <View>
+        <Image style={styles.logo} source={logo} />
+      </View>
 
       <View>
         <TextInput
           onChangeText={handleQuery}
-          style={styles.query} placeholder='Your Query' value={query}></TextInput>
+          style={styles.query} placeholder='Your Query'></TextInput>
         <TouchableOpacity style={styles.button}
-          onPress={() => navigation.navigate('Search', { query })}
+          onPress={() =>
+            query.length > 2 ? navigation.navigate('Search', { query }) : alert('Your query must have a least 3 letters')
+          }
         >
           <Text style={{ fontSize: 22, color: '#fff' }}>Search</Text>
         </TouchableOpacity>
@@ -38,12 +46,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
   },
   logo: {
     resizeMode: 'contain',
     width: 200
   },
+
+
   query: {
     width: 220,
     height: 50,
@@ -57,7 +67,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 4,
-    marginTop: 5,
+    marginTop: 10,
     marginBottom: 100
   }
 });
